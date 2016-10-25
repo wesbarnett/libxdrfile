@@ -8,3 +8,7 @@ To install do:
 
     $ make
     # make install
+
+To test the library capabilities, do:
+
+    $ make test

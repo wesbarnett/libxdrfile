@@ -18,6 +18,11 @@ install: ${NAME}.so
 	@install -Dm755 lib/* -t ${LIBDIR}
 	@install -Dm644 LICENSE  -t ${LICDIR}
 
+test: ${NAME}.so
+	@gfortran tests/test.c -o tests/$@ -Iinclude lib/${NAME}.so
+	@./tests/test
+
 clean:
 	@rm src/*.o lib/*.so
+	@rm test.xtc test.trr test.xdr tests/test
 	@rmdir lib 
