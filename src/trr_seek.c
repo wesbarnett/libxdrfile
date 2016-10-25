@@ -26,8 +26,7 @@ int read_trr_n_frames(char *fn, int *n_frames, int *est_nframes,
                       int64_t **offsets) {
   XDRFILE *xd;
   t_trnheader sh;
-  float time, lambda;
-  int result, framebytes, totalframebytes;
+  int result, framebytes;
   int64_t filesize, frame_offset;
 
   if ((xd = xdrfile_open(fn, "r")) == NULL)

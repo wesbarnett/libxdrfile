@@ -2,10 +2,6 @@
  *
  * $Id$
  *
- /* -*- mode: c; tab-width: 4; indent-tabs-mode: t; c-basic-offset: 4 -*-
- *
- * $Id$
- *
  * Copyright (c) 2009-2014, Erik Lindahl & David van der Spoel
  * All rights reserved.
  *
@@ -410,7 +406,7 @@ int read_trr_natoms(char *fn, int *natoms) {
 
 int write_trr(XDRFILE *xd, int natoms, int step, float t, float lambda,
               matrix box, rvec *x, rvec *v, rvec *f) {
-  int *plcholder;
+  int *plcholder = NULL;
   return do_trn(xd, 0, &step, &t, &lambda, box, &natoms, x, v, f, plcholder);
 }
 
