@@ -31,4 +31,3 @@ test: ${NAME}.so
 clean:
 	@rm src/*.o lib/*.so
 	@rm test.xtc test.trr test.xdr tests/test
-	@rmdir lib 
