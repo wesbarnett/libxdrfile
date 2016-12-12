@@ -6,12 +6,17 @@ LIBDIR = ${DESTDIR}${PREFIX}/lib
 PKGCONF = ${LIBDIR}/pkgconfig
 LICDIR = ${DESTDIR}${PREFIX}/share/licenses/${NAME}
 
-${NAME}.so: trr_seek.o xdrfile.o xdrfile_trr.o xdrfile_xtc.o xtc_seek.o
-	@gcc -o lib/$@ src/*.o -fPIC -shared -Wall
+SOURCES := $(wildcard src/*.c)
+HEADERS := $(wildcard include*.h)
+OBJECTS := $(SOURCES:src/%.c=%.o)
+CFLAGS := -fPIC -shared -Wall
+
+${NAME}.so: ${OBJECTS}
+	@gcc -o lib/$@ src/*.o ${CFLAGS}
 
 %.o: src/%.c
 	@mkdir -p include
-	@gcc -c -Iinclude -o src/$@ $< -fPIC -shared -Wall
+	@gcc -c -Iinclude -o src/$@ $< ${CFLAGS}
 
 install: ${NAME}.so
 	@install -Dm644 include/* -t ${INCLUDE}
