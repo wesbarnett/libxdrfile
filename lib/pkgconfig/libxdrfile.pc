@@ -1,0 +1,13 @@
+prefix=/usr
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+sharedlibdir=${libdir}
+includedir=${prefix}/include
+
+Name: libxdrfile
+Description: Reads/writes compressed trajectory files
+Version: 2.2
+
+Requires:
+Libs: -L${libdir} -L${sharedlibdir} -lxdrfile
+Cflags: -I${includedir}

@@ -3,10 +3,10 @@ NAME = libxdrfile
 PREFIX ?= /usr
 INCLUDE = ${DESTDIR}${PREFIX}/include
 LIBDIR = ${DESTDIR}${PREFIX}/lib
+PKGCONF = ${LIBDIR}/pkgconfig
 LICDIR = ${DESTDIR}${PREFIX}/share/licenses/${NAME}
 
 ${NAME}.so: trr_seek.o xdrfile.o xdrfile_trr.o xdrfile_xtc.o xtc_seek.o
-	@mkdir -p lib 
 	@gcc -o lib/$@ src/*.o -fPIC -shared -Wall
 
 %.o: src/%.c
@@ -15,8 +15,9 @@ ${NAME}.so: trr_seek.o xdrfile.o xdrfile_trr.o xdrfile_xtc.o xtc_seek.o
 
 install: ${NAME}.so
 	@install -Dm644 include/* -t ${INCLUDE}
-	@install -Dm755 lib/* -t ${LIBDIR}
 	@install -Dm644 LICENSE  -t ${LICDIR}
+	@install -Dm644 lib/pkgconfig/* -t ${PKGCONF}
+	@install -Dm755 lib/${NAME}.so -t ${LIBDIR}
 
 test: ${NAME}.so
 	@gfortran tests/test.c -o tests/$@ -Iinclude lib/${NAME}.so
