@@ -21,7 +21,8 @@ ${NAME}.so: ${OBJECTS}
 install: ${NAME}.so
 	@install -Dm644 include/* -t ${INCLUDE}
 	@install -Dm644 LICENSE  -t ${LICDIR}
-	@install -Dm644 lib/pkgconfig/* -t ${PKGCONF}
+	@sed 's/MYPREFIX/\${PREFIX}/g' lib/pkgconfig/libxdrfile.pc.in > lib/pkgconfig/libxdrfile.pc
+	@install -Dm644 lib/pkgconfig/*.pc -t ${PKGCONF}
 	@install -Dm755 lib/${NAME}.so -t ${LIBDIR}
 
 test: ${NAME}.so

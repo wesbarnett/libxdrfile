@@ -1,4 +1,4 @@
-prefix=/usr
+prefix=MYPREFIX
 exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 sharedlibdir=${libdir}
