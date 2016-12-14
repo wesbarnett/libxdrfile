@@ -5,6 +5,7 @@ INCLUDE = ${DESTDIR}${PREFIX}/include
 LIBDIR = ${DESTDIR}${PREFIX}/lib
 PKGCONF = ${LIBDIR}/pkgconfig
 LICDIR = ${DESTDIR}${PREFIX}/share/licenses/${NAME}
+VERSION := $(shell git describe --tags)
 
 SOURCES := $(wildcard src/*.c)
 HEADERS := $(wildcard include*.h)
@@ -17,7 +18,7 @@ ${NAME}.so: ${OBJECTS} ${NAME}.pc
 
 ${NAME}.pc:
 	@mkdir -p lib/pkgconfig
-	@sed 's.MYPREFIX.${PREFIX}.g' src/pkgconfig/libxdrfile.pc.in > lib/pkgconfig/libxdrfile.pc
+	@sed -e 's.MYPREFIX.${PREFIX}.g' -e 'sxMYVERSIONx${VERSION}xg' src/pkgconfig/$@.in > lib/pkgconfig/$@
 
 %.o: src/%.c
 	@mkdir -p include
