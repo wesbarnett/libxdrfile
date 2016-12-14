@@ -11,16 +11,19 @@ HEADERS := $(wildcard include*.h)
 OBJECTS := $(SOURCES:src/%.c=%.o)
 CFLAGS += -fPIC -shared -Wall
 
-${NAME}.so: ${OBJECTS}
+${NAME}.so: ${OBJECTS} ${NAME}.pc
+	@mkdir -p lib
+	@gcc -o lib/$@ src/*.o ${CFLAGS}
+
+${NAME}.pc:
 	@mkdir -p lib/pkgconfig
 	@sed 's.MYPREFIX.${PREFIX}.g' src/pkgconfig/libxdrfile.pc.in > lib/pkgconfig/libxdrfile.pc
-	@gcc -o lib/$@ src/*.o ${CFLAGS}
 
 %.o: src/%.c
 	@mkdir -p include
 	@gcc -c -Iinclude -o src/$@ $< ${CFLAGS}
 
-install: ${NAME}.so
+install: ${NAME}.so ${NAME}.pc
 	@install -Dm644 include/* -t ${INCLUDE}
 	@install -Dm644 LICENSE  -t ${LICDIR}
 	@install -Dm644 lib/pkgconfig/* -t ${PKGCONF}
