@@ -9,9 +9,11 @@ LICDIR = ${DESTDIR}${PREFIX}/share/licenses/${NAME}
 SOURCES := $(wildcard src/*.c)
 HEADERS := $(wildcard include*.h)
 OBJECTS := $(SOURCES:src/%.c=%.o)
-CFLAGS := -fPIC -shared -Wall
+CFLAGS += -fPIC -shared -Wall
 
 ${NAME}.so: ${OBJECTS}
+	@mkdir -p lib/pkgconfig
+	@sed 's.MYPREFIX.${PREFIX}.g' src/pkgconfig/libxdrfile.pc.in > lib/pkgconfig/libxdrfile.pc
 	@gcc -o lib/$@ src/*.o ${CFLAGS}
 
 %.o: src/%.c
@@ -21,14 +23,15 @@ ${NAME}.so: ${OBJECTS}
 install: ${NAME}.so
 	@install -Dm644 include/* -t ${INCLUDE}
 	@install -Dm644 LICENSE  -t ${LICDIR}
-	@sed 's/MYPREFIX/\${PREFIX}/g' lib/pkgconfig/libxdrfile.pc.in > lib/pkgconfig/libxdrfile.pc
-	@install -Dm644 lib/pkgconfig/*.pc -t ${PKGCONF}
+	@install -Dm644 lib/pkgconfig/* -t ${PKGCONF}
 	@install -Dm755 lib/${NAME}.so -t ${LIBDIR}
 
 test: ${NAME}.so
-	@gfortran tests/test.c -o tests/$@ -Iinclude lib/${NAME}.so
+	@mkdir -p tests
+	@gfortran src/tests/test.c -o tests/$@ -Iinclude lib/$<
 	@./tests/test
+	@rm -rf test.xtc test.trr test.xdr
 
 clean:
-	@rm src/*.o lib/*.so
-	@rm test.xtc test.trr test.xdr tests/test
+	@rm -rf src/*.o lib tests
+	@rm -rf test.xtc test.trr test.xdr
