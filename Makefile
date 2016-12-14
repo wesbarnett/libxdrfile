@@ -1,6 +1,6 @@
 .PHONY: all install clean test
 NAME = libxdrfile
-PREFIX ?= /usr
+PREFIX ?= /usr/local
 INCLUDE = ${DESTDIR}${PREFIX}/include
 LIBDIR = ${DESTDIR}${PREFIX}/lib
 PKGCONF = ${LIBDIR}/pkgconfig
