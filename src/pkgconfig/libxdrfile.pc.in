@@ -6,7 +6,6 @@ Name: libxdrfile
 Description: Reads/writes compressed trajectory files
 URL: https://github.com/wesbarnett/libxdrfile
 Version: MYVERSION
-
 Requires:
 Libs: -L${libdir} -lxdrfile
 Cflags: -I${includedir} -fPIC -shared
