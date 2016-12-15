@@ -9,5 +9,4 @@ Version: MYVERSION
 
 Requires:
 Libs: -L${libdir} -lxdrfile
-Cflags: -I${includedir}
-Cflags.private: -fPIC -shared
+Cflags: -I${includedir} -fPIC -shared
