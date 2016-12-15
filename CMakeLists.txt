@@ -3,6 +3,11 @@ enable_language (C)
 
 project ( xdrfile NONE )
 
+# Set the type/configuration of build to perform
+set ( CMAKE_CONFIGURATION_TYPES "Debug" "Release" "MinSizeRel" "RelWithDebInfo" )
+set ( CMAKE_BUILD_TYPE "Release"
+  CACHE STRING "Select which configuration to build." )
+
 set ( PROJECT_DESCRIPTION "Reads/writes compressed trajectory files" )
 set ( PROJECT_URL "https://github.com/wesbarnett/libxdrfile" )
 set ( LIBDIR "lib")
@@ -22,7 +27,6 @@ message ( STATUS "CMake build configuration for ${CMAKE_PROJECT_NAME} ${PROJECT_
 # versions compiled with different compilers can be installed in parallel
 string ( TOLOWER ${CMAKE_PROJECT_NAME} PACKAGE_NAME )
 set ( PACKAGE_VERSION "${PACKAGE_NAME}-${VERSION}" )
-
 
 file ( GLOB SRCS "src/*.c" )
 add_library ( ${CMAKE_PROJECT_NAME} SHARED ${SRCS} )
@@ -50,9 +54,11 @@ install ( FILES
    DESTINATION "${LIBDIR}/pkgconfig"
 )
 
-set ( EXPORT_INSTALL_DIR "${INSTALL_LIBDIR}/cmake/${PACKAGE_VERSION}" )
+#-----------------------------------------------------
+# Publicize installed location to other CMake projects
+#-----------------------------------------------------
 
-install ( EXPORT ${PACKAGE_NAME}-targets DESTINATION "${EXPORT_INSTALL_DIR}" )
+set ( EXPORT_INSTALL_DIR "${INSTALL_LIBDIR}/cmake/${PACKAGE_VERSION}" )
 
 include ( CMakePackageConfigHelpers ) # Standard CMake module
 write_basic_package_version_file(
@@ -74,7 +80,9 @@ install ( FILES
   "${CMAKE_BINARY_DIR}/${PACKAGE_NAME}-config-version.cmake"
   DESTINATION "${EXPORT_INSTALL_DIR}" )
 
+#-----------------------------------------------------
 # Tests
+#-----------------------------------------------------
 enable_testing ()
 include_directories ( include )
 set ( TEST_NAME "${CMAKE_PROJECT_NAME}_test")
