@@ -23,8 +23,6 @@ list(GET VERSION_LIST 2 VERSION_PATCH)
 set(PROJECT_VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 message ( STATUS "CMake build configuration for ${CMAKE_PROJECT_NAME} ${PROJECT_VERSION}" )
 
-# Set the package name to be specific to the compiler used, so that
-# versions compiled with different compilers can be installed in parallel
 string ( TOLOWER ${CMAKE_PROJECT_NAME} PACKAGE_NAME )
 set ( PACKAGE_VERSION "${PACKAGE_NAME}-${VERSION}" )
 
