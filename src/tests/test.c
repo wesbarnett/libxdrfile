@@ -450,12 +450,20 @@ static void test_basic()
 
 int main(int argc, char *argv[]) 
 {
-	/* Test basic stuff */
-	test_basic();
-	/* Now test writing a complete xtc file */
-	test_xtc();
 
-	test_trr();
+    int i = atoi(argv[1]);
+
+    if (i == 0) {
+        /* Test basic stuff */
+        test_basic();
+    }
+    else if (i == 1) {
+        /* Now test writing a complete xtc file */
+        test_xtc();
+    }
+    else if (i == 2) {
+        test_trr();
+    }
 		
 	return 0;
 }
