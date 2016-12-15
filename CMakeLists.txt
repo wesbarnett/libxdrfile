@@ -7,6 +7,8 @@ set ( PROJECT_DESCRIPTION "Reads/writes compressed trajectory files" )
 set ( PROJECT_URL "https://github.com/wesbarnett/libxdrfile" )
 set ( LIBDIR "lib")
 set ( INCLUDEDIR "include")
+set ( INSTALL_LIBDIR ${CMAKE_INSTALL_PREFIX}/${LIBDIR} )
+set ( INSTALL_INCLUDEDIR ${CMAKE_INSTALL_PREFIX}/${INCLUDEDIR} )
 
 file ( STRINGS "${CMAKE_SOURCE_DIR}/.VERSION" VERSION )
 string( REPLACE "." ";" VERSION_LIST ${VERSION} )
@@ -15,6 +17,12 @@ list(GET VERSION_LIST 1 VERSION_MINOR)
 list(GET VERSION_LIST 2 VERSION_PATCH)
 set(PROJECT_VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 message ( STATUS "CMake build configuration for ${CMAKE_PROJECT_NAME} ${PROJECT_VERSION}" )
+
+# Set the package name to be specific to the compiler used, so that
+# versions compiled with different compilers can be installed in parallel
+string ( TOLOWER ${CMAKE_PROJECT_NAME} PACKAGE_NAME )
+set ( PACKAGE_VERSION "${PACKAGE_NAME}-${VERSION}" )
+
 
 file ( GLOB SRCS "src/*.c" )
 add_library ( ${CMAKE_PROJECT_NAME} SHARED ${SRCS} )
@@ -28,7 +36,7 @@ set_target_properties ( ${CMAKE_PROJECT_NAME}
   LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${LIBDIR}"
 )
 
-install ( TARGETS ${CMAKE_PROJECT_NAME} LIBRARY DESTINATION ${LIBDIR} )
+install ( TARGETS ${CMAKE_PROJECT_NAME} EXPORT ${PACKAGE_NAME}-targets LIBRARY DESTINATION ${LIBDIR} )
 install ( DIRECTORY include/ DESTINATION ${INCLUDEDIR} FILES_MATCHING PATTERN "*.h")
 
 # pkg-config
@@ -41,6 +49,30 @@ install ( FILES
    "${CMAKE_CURRENT_BINARY_DIR}/lib${CMAKE_PROJECT_NAME}.pc"
    DESTINATION "${LIBDIR}/pkgconfig"
 )
+
+set ( EXPORT_INSTALL_DIR "${INSTALL_LIBDIR}/cmake/${PACKAGE_VERSION}" )
+
+install ( EXPORT ${PACKAGE_NAME}-targets DESTINATION "${EXPORT_INSTALL_DIR}" )
+
+include ( CMakePackageConfigHelpers ) # Standard CMake module
+write_basic_package_version_file(
+"${CMAKE_BINARY_DIR}/${PACKAGE_NAME}-config-version.cmake"
+  VERSION ${VERSION}
+  COMPATIBILITY SameMajorVersion )
+
+# install package config file
+configure_package_config_file (
+  "${CMAKE_SOURCE_DIR}/cmake/pkg/${CMAKE_PROJECT_NAME}-config.cmake.in"
+  "${CMAKE_BINARY_DIR}/pkg/${PACKAGE_NAME}-config.cmake"
+  INSTALL_DESTINATION "${EXPORT_INSTALL_DIR}"
+  PATH_VARS EXPORT_INSTALL_DIR)
+
+# Install the config and version files so that we can find this project with
+# others
+install ( FILES
+  "${CMAKE_BINARY_DIR}/pkg/${PACKAGE_NAME}-config.cmake"
+  "${CMAKE_BINARY_DIR}/${PACKAGE_NAME}-config-version.cmake"
+  DESTINATION "${EXPORT_INSTALL_DIR}" )
 
 # Tests
 enable_testing ()
