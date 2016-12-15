@@ -2,22 +2,21 @@
 
 Fork of [MDAnalysis](https://github.com/MDAnalysis/mdanalysis)'s implementation of
 xdrfile, which itself is a fork of [GROMACS](https://www.gromacs.org)'s
-implementation.
+implementation. I forked MDAnalysis' version because they have made several
+improvements that were never merged upstream. Additionally I wanted xdrfile to
+be a separate package that was easy to link other libraries to.
 
-To install do:
+## Compilation
 
     $ mkdir build
     $ cd build
-    $ cmake .. 
+    $ cmake .. -DCMAKE_INSTALL_PREFIX=/usr/local
     $ make
+
+## Installation
+
     # make install
 
-By default he library is installed to `/usr/local/lib` and headers are installed
-to `/usr/local/include`. To choose a specific directory for installation you can
-use `-DCMAKE_INSTALL_PREFIX` with cmake. For example, the following installs the library to
-`/home/wes/xdrfile`.
-
-    $ cmake .. -DCMAKE_INSTALL_PREFIX=/home/wes/xdrfile
 
 ## Linking other cmake projects
 
