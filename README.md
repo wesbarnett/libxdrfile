@@ -6,17 +6,31 @@ implementation. I forked MDAnalysis' version because they have made several
 improvements that were never merged upstream. Additionally I wanted xdrfile to
 be a separate package that was easy to link other libraries to.
 
+This version of xdrfile is required for
+[libgmxfort](https://github.com/wesbarnett/libgmxfort).
+
 ## Compilation
 
-    $ mkdir build
-    $ cd build
-    $ cmake .. -DCMAKE_INSTALL_PREFIX=/usr/local
-    $ make
+```bash
+mkdir build
+cd build
+cmake .. -DCMAKE_INSTALL_PREFIX=/usr/local
+make
+```
 
 ## Installation
 
-    # make install
+```bash
+make install
+```
 
+## Testing
+
+To test the library capabilities, do:
+
+```bash
+make test
+```
 
 ## Linking other cmake projects
 
@@ -29,8 +43,3 @@ installation. Use `find_package ( xdrfile )` and the variables
 A pkg-config file is included for use in compiling other programs. You may need
 to set `PKG_CONFIG_PATH` to its location (by default `/usr/local/lib/pkgconfig`).
 
-## Testing
-
-To test the library capabilities, do:
-
-    $ make test
